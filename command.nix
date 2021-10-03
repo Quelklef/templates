@@ -47,6 +47,7 @@ pkgs.writeShellScriptBin command-name ''
 
     mkdir -p "./$tname" &&
     cp -r "${here}/$tname/." "./$tname" &&
+    chmod -R +wr "./$tname" &&
     echo "Initialized to ./$tname"
   }
 
