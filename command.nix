@@ -11,6 +11,8 @@ gitignoreSource =
       };
   in (import fetched { inherit (pkgs) lib; }).gitignoreSource;
 
+here = gitignoreSource ./.;
+
 in
 
 pkgs.writeShellScriptBin command-name ''
@@ -30,8 +32,8 @@ pkgs.writeShellScriptBin command-name ''
   function list-templates {
     echo "Run '${command-name} <template>' to clone a template"
     echo "Available templates:"
-    for f in $(ls ${gitignoreSource ./.}); do
-      if [ -d "${./.}/$f" ]; then
+    for f in $(ls ${here}); do
+      if [ -d "${here}/$f" ]; then
         echo "- $f"
       fi
     done
@@ -40,11 +42,11 @@ pkgs.writeShellScriptBin command-name ''
   function init-template {
     local tname="$1"
 
-    [ -d "${./.}/$tname" ] || fail "No template '$tname'"
+    [ -d "${here}/$tname" ] || fail "No template '$tname'"
     [ -d "./$tname" ] && fail "./$tname already exists"
 
     mkdir -p "./$tname" &&
-    cp -r "${./.}/$tname/." "./$tname" &&
+    cp -r "${here}/$tname/." "./$tname" &&
     echo "Initialized to ./$tname"
   }
 
