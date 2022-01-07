@@ -3,7 +3,7 @@ let
 inherit (import ./pins.nix) pkgs purs-nix npmlock2nix gitignoreSource;
 
 nixed = purs-nix.purs
-  { srcs = [ ../src ];
+  { srcs = [ ../app ];
     dependencies =
       with purs-nix.ps-pkgs;
       [ console
@@ -41,12 +41,36 @@ in {
 
   shell = pkgs.mkShell {
     buildInputs =
-      [ (nixed.command { srcs = [ ''$(realpath "$PWD/src")'' ]; })
+      [ (nixed.command { srcs = [ ''$(realpath "$PWD/app")'' ]; })
         pkgs.nodejs
+        pkgs.python3
+        pkgs.entr
       ];
 
     shellHook = ''
-      echo '✨🐈✨'
+
+      function workflow.build {(
+        echo watching
+        find app | entr -s '
+          set -eo pipefail
+          echo building
+
+          mkdir -p .working
+          cd .working
+
+          rm -rf app index.html
+          cp -r ../{app,app/index.html} .
+
+          purs-nix bundle
+        '
+      )}
+
+      function workflow.serve {(
+        mkdir -p .working &&
+          cd .working &&
+          python3 -m http.server
+      )}
+
     '';
   };
 

@@ -2,3 +2,4 @@ result
 index.js
 output/
 node_modules/
+.working/

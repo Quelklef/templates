@@ -1,5 +1,5 @@
 My personal template library
 
-- `porygon` - a purescript/nix template
+- `porygon`: Purescript/Nix. Appropriate for both webapps and JS executables.
 
-Install `command.nix` with `nix-env` to have a template-cloning command.
+Install with `nix-env -if ./command.nix`, and then run `q.init-template`.
