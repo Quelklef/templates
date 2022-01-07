@@ -5,7 +5,7 @@ pkgs = import <nixpkgs> {};
 purs-nix =
   let fetched = builtins.fetchGit
        { url = "https://github.com/ursi/purs-nix.git";
-         rev = "ef777b08b38e225f1fcb6b4ea3796b450fe2602f";
+         rev = "21bc6fc6dc3b595acf6f02cf09b873db877caa5d";
        };
   in import fetched {};
 
